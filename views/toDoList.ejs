@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>My TO-DO LIST</title>
+    <link rel='stylesheet' href='/stylesheets/css/bootstrap.min.css' />
+    <link rel='stylesheet' href='/stylesheets/css/bootstrap-theme.min.css' />
+
+    <script src="/javascripts/js/jquery.min.js"></script>
+    <script src="/javascripts/js/jquery-ui.min.js"></script>
+
+    <script src="/javascripts/js/bootstrap.min.js"></script>
+    <script src="/javascripts/js/jquery.blockUI.js"></script>
+
+    <script>
+            function updateTask(taskID , taskName) {
+                $("#updateText").val(taskName);
+                alert($("#updateID").attr("href"));
+
+                $("#updateText").on('input',function() {  $("#updateID").prop("href", "/updateTask/" + taskID + "/" +  $("#updateText").val()); });
+
+                $.blockUI({ message: $('#updateTaskForm') });
+            };
+    </script>
+</head>
+<body style="background-color: #000000; color: #ffffff;">
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid" style="background-color: purple; color: #ffffff">
+        <div class="navbar-header">
+            <a class="navbar-brand navbar-static-top" href="#" style="color:#ffffff; font-style: italic">
+                My TO-DO List
+            </a>
+        </div>
+    </div>
+</nav>
+
+<h1 style="text-align: center">My To-Do List !</h1>
+
+<form action="/addTask" method="post" class="container">
+    <div class="form-group">
+        <input type="text" class="form-control" id="content" name="content" placeholder="Enter New Task !">
+    </div>
+</form>
+
+<br>
+
+<div id="updateTaskForm" style="display:none">
+    <h3>Update Task!</h3>
+    <input type="text" class="form-control" id="updateText" name="updateText">
+
+    <br>
+
+    <a class="btn btn-primary" id="updateID" href="#">Update</a>
+    <button class="btn btn-primary" onclick="$.unblockUI();">Cancel</button>
+</div>
+
+<div class="container">
+    <table class="table" style="color: #000000; background-color: blueviolet">
+
+        <% toDoList.forEach( function( toDo ){ %>
+
+        <tr>
+            <td></td>
+            <td><span style="font-weight: bolder; font-size: large"><%= toDo.task %></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><a class="btn btn-primary" href="/deleteTask/<%= toDo._id %>">Delete</a></td>
+            <td><button class="btn btn-primary" onclick="updateTask('<%= toDo._id %>' , '<%= toDo.task %>')">Update</button></td>
+
+        </tr>
+
+        <% }); %>
+
+    </table>
+</div>
+
+
+
+</body>
+</html>
